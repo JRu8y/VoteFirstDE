@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<style>
+
+.district-border {
+		fill: none;
+		stroke: white;
+	}
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
+<script src="//d3js.org/topojson.v1.min.js"></script>
+<script>
+
+/* JavaScript goes here. */
+
+var width = 960,
+    height = 1160;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+
+d3.json("input.json", function(error, de) {
+  if (error) return console.error(error);
+  console.log(de);
+
+	var districts = topojson.feature(de, de.objects.Districts_Representative);
+
+	var projection = d3.geo.mercator().center([-75.5, 39.6]).scale(11000);
+
+	var path = d3.geo.path().projection(projection);
+
+	svg.append("path")
+      .datum(districts)
+      .attr("d", path).style("fill","#cdd");
+
+	svg.append("path").datum(topojson.mesh(de, de.objects.Districts_Representative, function(a, b) {
+			return a !== b;
+		})).attr("class", "district-border").attr("d", path);
+});
+
+
+
+
+
+
+
+</script>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<style>
+  div.chart{
+    font-family: sans-serif;
+    font-size: 0.7em;
+  }
+  div.bar{
+    background-color: DarkRed;
+    color: white;
+    height:3em;
+    line-height:3em;
+    padding-right: 1em;
+    margin-bottom: 2px;
+    text-align: right;
+  }
+</style>
+<head>
+    <meta charset="utf-8">
+    <script src="d3.js"></script>
+    <script>
+    function draw(data){
+    "use strict";
+    d3.select("body")
+      .append("div")
+        .attr("class","chart")
+      .selectAll(".bar")
+      .data(data.cash)
+      .enter()
+      .append("div")
+        .attr("class","bar")
+        .style("width", function(d){return d.count/100 + "px"})
+        .style("outline", "1px solid black")
+        .text(function(d){return Math.round(d.count)})
+    }
+    </script>
+</head>
+<body>
+  <script>
+    d3.json("data/plaza_traffic.json", draw);
+  </script>
+  </body>
+  </html>
